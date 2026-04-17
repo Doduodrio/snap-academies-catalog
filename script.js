@@ -152,12 +152,16 @@ function displayCard() {
     document.body.setAttribute('style', 'overflow: hidden;');
 }
 
-function hideDisplay() {
-    fullDisplay.setAttribute('style', 'display: none;');
+function hideDisplay(e) {
+    // don't hide if image was clicked
+    if (!fullDisplay.querySelector('img').contains(e.target)) {
+        fullDisplay.setAttribute('style', 'display: none;');
 
-    // allow scrolling again
-    document.body.setAttribute('style', '');
+        // allow scrolling again
+        document.body.setAttribute('style', '');
+    }
 }
 
 document.addEventListener("DOMContentLoaded", addCards);
 fullDisplay.querySelector('button').addEventListener('click', hideDisplay);
+fullDisplay.addEventListener('click', hideDisplay);

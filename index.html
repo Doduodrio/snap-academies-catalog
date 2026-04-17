@@ -1,31 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>LA TV Shows | Home</title>
-    <meta name="description" content="A Catalog of Shows Set in Los Angeles" />
-    <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="scripts.js"></script>
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <body>
-    <header class="main-header">
-      <h1 class="title">LA TV Shows</h1>
-    </header>
-    <div id="card-container"></div>
-    <div class="card" style="display: none">
-      <div class="card-content">
-        <h2>TV Show Title</h2>
-        <img src="" alt="TV Show Poster" />
-        <ul>
-          <li>Bullet Point 1</li>
-          <li>Bullet Point 2</li>
-          <li>Bullet Point 3</li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer">
-      <button onclick="quoteAlert()">Get A Quote!</button>
-      <button onclick="removeLastCard()">Remove A Card!</button>
-    </div>
-  </body>
+        <title>Isaac's Art Gallery</title>
+        <link href="./style.css" rel="stylesheet"/>
+        <link href="./hey_icon_transparent.png" rel="icon">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+        <script type="module" src="./scripts.js"></script>
+    </head>
+    <body>
+        <header class="header">
+            <div class="icon-container">
+                <img class="icon" src="./hey.png" alt="hey">
+                <img class="icon wink" src="./hey_wink.png" alt="hey_wink">
+            </div>
+            <h2>Isaac's Art Gallery</h2>
+        </header>
+        <div id="card-container"></div>
+        <div class="card">
+            <div class="card-content">
+                <h2>TV Show Title</h2>
+                <img src="" alt="TV Show Poster" />
+                <ul>
+                    <li>Bullet Point 1</li>
+                    <li>Bullet Point 2</li>
+                    <li>Bullet Point 3</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <button onclick="quoteAlert()">Get A Quote!</button>
+            <button onclick="removeLastCard()">Remove A Card!</button>
+        </div>
+    </body>
 </html>

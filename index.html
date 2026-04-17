@@ -22,11 +22,7 @@
             </div>
             <h2>Isaac's Art Gallery</h2>
         </header>
-        <div id="full-display" style="display: none;">
-            <img src="./assets/dpr_ian_mito.png" alt="dpr_ian_mito">
-            <button class="close-button"><img src="./assets/close.svg" alt="close"></button>
-        </div>
-        <div class="mainpage">
+        <div id="mainpage">
             <div class="options">
                 <div class="options-header">
                     <h3>Options</h3>
@@ -40,6 +36,34 @@
             <div id="card-column-0" class="card-column"></div>
             <div id="card-column-1" class="card-column"></div>
             <div id="card-column-2" class="card-column"></div>
+        </div>
+        <div id="full-display" style="display: none;">
+            <div class="main-image">
+                <img>
+            </div>
+            <div class="sidebar" style="display: none;">
+                <div class="sidebar-header">
+                    <h2></h2>
+                    <button title="Close sidebar"><img src="./assets/close.svg" alt="close"></button>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <img src="./assets/views.svg" alt="views" class="svg-icon">
+                        <p></p>
+                    </div>
+                    <div class="card-stat">
+                        <img src="./assets/likes.svg" alt="likes" class="svg-icon">
+                        <p></p>
+                    </div>
+                    <div class="card-stat">
+                        <img src="./assets/calendar.svg" alt="date" class="svg-icon">
+                        <time></time>
+                    </div>
+                </div>
+                <p></p>
+            </div>
+            <button class="close-button" title="Close"><img src="./assets/close.svg" alt="close"></button>
+            <button class="info-button" title="Details"><img src="./assets/info.svg" alt="details"></button>
         </div>
         <div id="card-template" class="card" style="display: none;">
             <img src="">

@@ -4,9 +4,10 @@ const cardColumns = [
     document.getElementById('card-column-2')
 ];
 const cardTemplate = document.getElementById('card-template');
+const fullDisplay  = document.getElementById('full-display');
 
 const cardData = {
-    'DPR IAN Mito': {
+    'dpr_ian_mito': {
         'title': 'DPR IAN Mito',
         'timestamp': '2026-02-16T06:07:44.996Z',
         'description': 'A monochrome portrait of the artist DPR IAN as his character MITO.',
@@ -18,7 +19,7 @@ const cardData = {
         'width': 64,
         'colors': 4
     },
-    'DPR IAN': {
+    'dpr_ian': {
         'title': 'DPR IAN',
         'timestamp': '2025-11-01T07:22:10.996Z',
         'description': 'A portrait of my favorite artist, DPR IAN, in an outfit for his SAINT album.',
@@ -30,7 +31,7 @@ const cardData = {
         'width': 144,
         'colors': 14
     },
-    'Halloween GBC Sprites': {
+    'halloween_gbc_sprites': {
         'title': 'Halloween GBC Sprites',
         'timestamp': '2025-06-23T07:59:10.996Z',
         'description': 'Sprites and portraits of little Halloween characters.',
@@ -42,7 +43,7 @@ const cardData = {
         'width': 152,
         'colors': 5
     },
-    'V': {
+    'v': {
         'title': 'V',
         'timestamp': '2025-06-03T02:17:47.996Z',
         'description': 'V from BTS as he appeared on a Vogue Korea magazine cover.',
@@ -54,7 +55,7 @@ const cardData = {
         'width': 160,
         'colors': 10
     },
-    'Hands Study': {
+    'hands_study': {
         'title': 'Hands Study',
         'timestamp': '2024-11-22T16:25:39.996Z',
         'description': 'I wanted to get better at drawing hands, so I drew a bunch of them in different angles.',
@@ -66,7 +67,7 @@ const cardData = {
         'width': 184,
         'colors': 4
     },
-    'May': {
+    'may': {
         'title': 'May',
         'timestamp': '2024-04-14T00:37:56.996Z',
         'description': 'May from Pokémon Ruby/Sapphire, drawn with my 4-color Red Bean Paste palette.',
@@ -78,7 +79,7 @@ const cardData = {
         'width': 90,
         'colors': 4
     },
-    'clockworkgrn Portraits': {
+    'clockworkgrn_portraits': {
         'title': 'clockworkgrn Portraits',
         'timestamp': '2024-07-24T07:08:26.996Z',
         'description': "I drew my friend clockworkgrn's original characters for Art Fight 2024!",
@@ -90,7 +91,7 @@ const cardData = {
         'width': 188,
         'colors': 4
     },
-    'Advance Wars!': {
+    'advance': {
         'title': 'Advance Wars!',
         'timestamp': '2023-08-29T04:41:09.996Z',
         'description': 'Nine 32x32 portraits of characters from Advance Wars, drawn with my 4-color Red Bean Paste palette.',
@@ -102,7 +103,7 @@ const cardData = {
         'width': 256,
         'colors': 4
     },
-    'Pokémon Ranger': {
+    'ranger': {
         'title': 'Pokémon Ranger',
         'timestamp': '2023-06-23T01:06:18.996Z',
         'description': 'A 56x56 sprite of a Pokémon ranger in the style of Gameboy Color games.',
@@ -134,8 +135,29 @@ function addCards() {
 
         newCard.querySelector('h4').textContent = cardData[c].title;
 
+        newCard.addEventListener('click', displayCard);
+
         cardColumns[i++%3].appendChild(newCard);
     }
 }
 
+function displayCard() {
+    // set displayed image
+    fullDisplay.querySelector('img').src = `./assets/${cardData[this.id].src}`;
+    fullDisplay.setAttribute('style', '');
+
+    fullDisplay.setAttribute('style', `top: ${window.scrollY}px`);
+
+    // lock screen
+    document.body.setAttribute('style', 'overflow: hidden;');
+}
+
+function hideDisplay() {
+    fullDisplay.setAttribute('style', 'display: none;');
+
+    // allow scrolling again
+    document.body.setAttribute('style', '');
+}
+
 document.addEventListener("DOMContentLoaded", addCards);
+fullDisplay.querySelector('button').addEventListener('click', hideDisplay);

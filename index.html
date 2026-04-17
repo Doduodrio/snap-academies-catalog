@@ -12,7 +12,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 
-        <script type="module" src="./scripts.js"></script>
+        <script type="module" src="./script.js"></script>
     </head>
     <body>
         <header class="header">
@@ -22,16 +22,31 @@
             </div>
             <h2>Isaac's Art Gallery</h2>
         </header>
-        <div id="card-container"></div>
-        <div class="card">
-            <div class="card-content">
-                <h2>TV Show Title</h2>
-                <img src="" alt="TV Show Poster" />
-                <ul>
-                    <li>Bullet Point 1</li>
-                    <li>Bullet Point 2</li>
-                    <li>Bullet Point 3</li>
-                </ul>
+        <div class="mainpage">
+            <div class="options">
+                <div class="options-header">
+                    <h3>Options</h3>
+                </div>
+                <div class="options-content">
+                    <p>Option 1</p>
+                    <p>Option 2</p>
+                    <p>Option 3</p>
+                </div>
+            </div>
+            <div id="card-column-0" class="card-column"></div>
+            <div id="card-column-1" class="card-column"></div>
+            <div id="card-column-2" class="card-column"></div>
+        </div>
+        <div id="card-template" class="card" style="display: none;">
+            <img src="">
+            <div class="card-overlay">
+                <div class="card-stats">
+                    <img src="./assets/views.svg" alt="views" class="svg-icon">
+                    <p></p>
+                    <img src="./assets/likes.svg" alt="likes" class="svg-icon">
+                    <p></p>
+                </div>
+                <h4></h4>
             </div>
         </div>
         <div class="footer">

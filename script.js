@@ -128,10 +128,11 @@ function addCards() {
         cardImage.setAttribute('src', `./assets/${cardData[c].src}`);
         cardImage.setAttribute('alt', cardData[c].id);
 
-        newCard.querySelector('h4').textContent = cardData[c].title;
-
         newCard.querySelectorAll('p')[0].textContent = cardData[c].views;
         newCard.querySelectorAll('p')[1].textContent = cardData[c].likes;
+        newCard.querySelectorAll('p')[2].textContent = new Date(cardData[c].timestamp).toLocaleDateString();
+
+        newCard.querySelector('h4').textContent = cardData[c].title;
 
         cardColumns[i++%3].appendChild(newCard);
     }

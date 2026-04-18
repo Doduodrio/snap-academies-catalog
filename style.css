@@ -40,7 +40,7 @@ body {
     opacity: 1;
 }
 
-.mainpage {
+#mainpage {
     max-width: 1440px;
     display: flex;
     align-items: flex-start;
@@ -131,32 +131,72 @@ body {
     top: 0;
     left: 0;
     display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     height: 100%;
     width: 100%;
-    background-color: rgb(0, 0, 0, 0.9);
-    z-index: 1;
+    background-color: rgb(26, 26, 26, 0.8);
 }
 
-#full-display img {
+#full-display .main-image {
+    height: 85%;
+}
+
+#full-display .main-image img {
     display: block;
     height: 100%;
-    margin: 0 auto;
+    transition: 200ms;
+}
+
+#full-display .sidebar {
+    position: absolute;
+    right: 0px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    max-width: 350px;
+    height: 80%;
+    color: #f2e9d9;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-right: 24px;
+    padding: 16px 24px;
+}
+
+#full-display .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#full-display button {
+    background-color: transparent;
+    padding: 6px;
+    border: none;
+    border-radius: 50%;
+    transition: 200ms;
+}
+
+#full-display button:hover {
+    cursor: pointer;
+    background-color: rgb(255, 255, 255, 0.2);
+}
+
+#full-display button img {
+    display: block;
 }
 
 #full-display .close-button {
     position: absolute;
     top: 16px;
     left: 16px;
-    padding: 4px;
 }
 
-#full-display button {
-    background-color: transparent;
-    border: none;
-}
-
-#full-display button:hover {
-    cursor: pointer;
-    background-color: rgb(255, 255, 255, 0.3);
-    border-radius: 4px;
+#full-display .info-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
 }

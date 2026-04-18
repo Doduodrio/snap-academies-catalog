@@ -31,9 +31,37 @@
                     <p>Welcome to my gallery!</p>
                 </div>
             </div>
-            <div id="card-column-0" class="card-column"></div>
-            <div id="card-column-1" class="card-column"></div>
-            <div id="card-column-2" class="card-column"></div>
+            <div class="mainpage-content">
+                <div class="sort-filter-menu">
+                    <button id="sort-button"><img src="./assets/sort.svg" alt="sort">Sort</button>
+                    <form id="sort-menu" class="hidden">
+                        <label><input type="radio" name="sort" value="0" checked>Newest</label>
+                        <label><input type="radio" name="sort" value="1">Oldest</label>
+                        <label><input type="radio" name="sort" value="2">Most Liked</label>
+                        <label><input type="radio" name="sort" value="3">Most Viewed</label>
+                    </form>
+                    <select name="Options">
+                        <option value="Option 1">Option 1</option>
+                        <option value="Option 2">Option 2</option>
+                        <option value="Option 3">Option 3</option>
+                    </select>
+                    <select name="Other Options">
+                        <option value="Option 1">Option 1</option>
+                        <option value="Option 2">Option 2</option>
+                        <option value="Option 3">Option 3</option>
+                    </select>
+                    <select name="Other Other Options">
+                        <option value="Option 1">Option 1</option>
+                        <option value="Option 2">Option 2</option>
+                        <option value="Option 3">Option 3</option>
+                    </select>
+                </div>
+                <div class="card-column-container">
+                    <div id="card-column-0" class="card-column"></div>
+                    <div id="card-column-1" class="card-column"></div>
+                    <div id="card-column-2" class="card-column"></div>
+                </div>
+            </div>
         </div>
         <div id="full-display" style="display: none;">
             <div class="main-image">

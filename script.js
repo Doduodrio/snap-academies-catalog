@@ -3,11 +3,16 @@ const cardColumns = [
     document.getElementById('card-column-1'),
     document.getElementById('card-column-2')
 ];
-const mainpage           = document.getElementById('mainpage');
-const cardTemplate       = document.getElementById('card-template');
-const fullDisplay        = document.getElementById('full-display');
-const displayCloseButton = fullDisplay.querySelector('.close-button');
-const displaySidebar     = fullDisplay.querySelector('.sidebar');
+const mainpage       = document.getElementById('mainpage');
+const cardTemplate   = document.getElementById('card-template');
+const fullDisplay    = document.getElementById('full-display');
+const mainImage      = fullDisplay.querySelector('.main-image img');
+const closeButton    = fullDisplay.querySelector('.close-button');
+const displaySidebar = fullDisplay.querySelector('.sidebar');
+const zoom           = fullDisplay.querySelector('.zoom');
+const zoomOutButton  = fullDisplay.querySelectorAll('.zoom button')[0];
+const zoomInButton   = fullDisplay.querySelectorAll('.zoom button')[1];
+const displayFooter  = document.getElementById('display-footer');
 
 const cardData = {
     'dpr_ian_mito': {
@@ -120,6 +125,9 @@ const cardData = {
     }
 }
 
+var imageScale = [20, 40, 60, 85, 100];
+var imageScaleIndex = 3;
+
 // add cards to card columns
 function addCards() {
     let i=0;
@@ -148,7 +156,6 @@ function addCards() {
 
 function displayCard() {
     // set display image
-    const mainImage = fullDisplay.querySelector('.main-image img');
     mainImage.setAttribute('src', `./assets/${cardData[this.id].src}`);
     mainImage.setAttribute('alt', `./assets/${cardData[this.id].id}`);
 
@@ -174,7 +181,7 @@ function displayCard() {
 
 function hideDisplay(e) {
     // only hide if background or close button was clicked
-    if (e.target === fullDisplay || displayCloseButton.contains(e.target)) {
+    if (e.target === fullDisplay || e.target === fullDisplay.querySelector('.main-image') || closeButton.contains(e.target)) {
         fullDisplay.setAttribute('style', 'display: none;');
 
         // allow scrolling again
@@ -187,7 +194,8 @@ function toggleDisplaySidebar() {
     if (displaySidebar.getAttribute('style') === 'display: none;') {
         // show sidebar and shift image left
         displaySidebar.setAttribute('style', '');
-        fullDisplay.querySelector('.main-image img').setAttribute('style', `transform: translateX(-${displaySidebar.clientWidth/2+12}px);`);
+        mainImage.setAttribute('style', `transform: translateX(-${displaySidebar.clientWidth/2+12}px);`);
+        zoom.setAttribute('style', `transform: translateX(-${displaySidebar.clientWidth/2+12}px);`);
     }
     else {
         hideDisplaySidebar();
@@ -197,7 +205,39 @@ function toggleDisplaySidebar() {
 function hideDisplaySidebar() {
     // hide sidebar and shift image right
     displaySidebar.setAttribute('style', 'display: none;');
-    fullDisplay.querySelector('.main-image img').setAttribute('style', '');
+    mainImage.setAttribute('style', '');
+    zoom.setAttribute('style', '');
+}
+
+function zoomOutDisplayImage() {
+    if (imageScaleIndex > 0) {
+        mainImage.parentElement.setAttribute('style', `height: ${imageScale[--imageScaleIndex]}%;`);
+        if (imageScaleIndex === 0) {
+            // disable zoom out button if at smallest zoom
+            zoomOutButton.setAttribute('class', 'disabled');
+        }
+        else if (imageScaleIndex === imageScale.length-2) {
+            // enable zoom in button if no longer at largest zoom
+            zoomInButton.setAttribute('class', '');
+        }
+    }
+}
+
+function zoomInDisplayImage() {
+    if (imageScaleIndex < imageScale.length-1) {
+        mainImage.parentElement.setAttribute('style', `height: ${imageScale[++imageScaleIndex]}%;`);
+        if (imageScaleIndex === imageScale.length-1) {
+            // disable zoom in button if at largest zoom
+            zoomInButton.setAttribute('class', 'disabled');
+        }
+        else if (imageScaleIndex === 1) {
+            // enable zoom out button if no longer at smallest zoom
+            zoomOutButton.setAttribute('class', '');
+        }
+    }
+}
+
+function showZoomButtons() {
 }
 
 // add event listeners
@@ -205,3 +245,5 @@ document.addEventListener('DOMContentLoaded', addCards);
 fullDisplay.addEventListener('click', hideDisplay);
 fullDisplay.querySelector('.info-button').addEventListener('click', toggleDisplaySidebar);
 displaySidebar.querySelector('button').addEventListener('click', hideDisplaySidebar);
+zoomOutButton.addEventListener('click', zoomOutDisplayImage);
+zoomInButton.addEventListener('click', zoomInDisplayImage);

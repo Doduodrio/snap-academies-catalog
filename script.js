@@ -3,8 +3,11 @@ const cardColumns = [
     document.getElementById('card-column-1'),
     document.getElementById('card-column-2')
 ];
-const cardTemplate = document.getElementById('card-template');
-const fullDisplay  = document.getElementById('full-display');
+const mainpage           = document.getElementById('mainpage');
+const cardTemplate       = document.getElementById('card-template');
+const fullDisplay        = document.getElementById('full-display');
+const displayCloseButton = fullDisplay.querySelector('.close-button');
+const displaySidebar     = fullDisplay.querySelector('.sidebar');
 
 const cardData = {
     'dpr_ian_mito': {
@@ -125,10 +128,12 @@ function addCards() {
         newCard.setAttribute('id', cardData[c].id);
         newCard.setAttribute('style', '');
 
+        // set card image
         const cardImage = newCard.querySelector('img');
         cardImage.setAttribute('src', `./assets/${cardData[c].src}`);
         cardImage.setAttribute('alt', cardData[c].id);
 
+        // set card stats
         newCard.querySelectorAll('p')[0].textContent = cardData[c].views;
         newCard.querySelectorAll('p')[1].textContent = cardData[c].likes;
         newCard.querySelectorAll('p')[2].textContent = new Date(cardData[c].timestamp).toLocaleDateString();
@@ -142,26 +147,61 @@ function addCards() {
 }
 
 function displayCard() {
-    // set displayed image
-    fullDisplay.querySelector('img').src = `./assets/${cardData[this.id].src}`;
-    fullDisplay.setAttribute('style', '');
+    // set display image
+    const mainImage = fullDisplay.querySelector('.main-image img');
+    mainImage.setAttribute('src', `./assets/${cardData[this.id].src}`);
+    mainImage.setAttribute('alt', `./assets/${cardData[this.id].id}`);
 
+    // set card info
+    fullDisplay.querySelector('h2').textContent = cardData[this.id].title;
+    fullDisplay.querySelectorAll('p')[0].textContent = cardData[this.id].views;
+    fullDisplay.querySelectorAll('p')[1].textContent = cardData[this.id].likes;
+
+    const timestamp = fullDisplay.querySelector('time');
+    timestamp.setAttribute('datetime', cardData[this.id].timestamp);
+    timestamp.textContent = new Date(cardData[this.id].timestamp).toLocaleDateString();
+    
+    fullDisplay.querySelectorAll('p')[2].textContent = cardData[this.id].description;
+
+    // align display to screen
     fullDisplay.setAttribute('style', `top: ${window.scrollY}px`);
 
     // lock screen
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.setAttribute('style', 'overflow: hidden;');
+    mainpage.setAttribute('style', `padding-right: ${scrollbarWidth+16}px;`);
 }
 
 function hideDisplay(e) {
-    // don't hide if image was clicked
-    if (!fullDisplay.querySelector('img').contains(e.target)) {
+    // only hide if background or close button was clicked
+    if (e.target === fullDisplay || displayCloseButton.contains(e.target)) {
         fullDisplay.setAttribute('style', 'display: none;');
 
         // allow scrolling again
         document.body.setAttribute('style', '');
+        mainpage.setAttribute('style', '');
     }
 }
 
-document.addEventListener("DOMContentLoaded", addCards);
-fullDisplay.querySelector('button').addEventListener('click', hideDisplay);
+function toggleDisplaySidebar() {
+    if (displaySidebar.getAttribute('style') === 'display: none;') {
+        // show sidebar and shift image left
+        displaySidebar.setAttribute('style', '');
+        fullDisplay.querySelector('.main-image img').setAttribute('style', `transform: translateX(-${displaySidebar.clientWidth/2+12}px);`);
+    }
+    else {
+        hideDisplaySidebar();
+    }
+}
+
+function hideDisplaySidebar() {
+    // hide sidebar and shift image right
+    displaySidebar.setAttribute('style', 'display: none;');
+    fullDisplay.querySelector('.main-image img').setAttribute('style', '');
+}
+
+// add event listeners
+document.addEventListener('DOMContentLoaded', addCards);
 fullDisplay.addEventListener('click', hideDisplay);
+fullDisplay.querySelector('.info-button').addEventListener('click', toggleDisplaySidebar);
+displaySidebar.querySelector('button').addEventListener('click', hideDisplaySidebar);

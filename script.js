@@ -3,8 +3,10 @@ const cardColumns = [
     document.getElementById('card-column-1'),
     document.getElementById('card-column-2')
 ];
+
 const mainpage       = document.getElementById('mainpage');
 const cardTemplate   = document.getElementById('card-template');
+
 const fullDisplay    = document.getElementById('full-display');
 const mainImage      = fullDisplay.querySelector('.main-image img');
 const closeButton    = fullDisplay.querySelector('.close-button');
@@ -13,6 +15,9 @@ const zoom           = fullDisplay.querySelector('.zoom');
 const zoomOutButton  = fullDisplay.querySelectorAll('.zoom button')[0];
 const zoomInButton   = fullDisplay.querySelectorAll('.zoom button')[1];
 const displayFooter  = document.getElementById('display-footer');
+
+const sortButton     = document.getElementById('sort-button');
+const sortMenu       = document.getElementById('sort-menu');
 
 const cardData = {
     'dpr_ian_mito': {
@@ -125,32 +130,44 @@ const cardData = {
     }
 }
 
+const sortFunctions = [
+    (a, b) => new Date(b.timestamp) - new Date(a.timestamp), // newest
+    (a, b) => new Date(a.timestamp) - new Date(b.timestamp), // oldest
+    (a, b) => b.likes - a.likes,                             // most liked
+    (a, b) => b.views - a.views                              // most viewed
+];
+
 var imageScale = [20, 40, 60, 85, 100];
 var imageScaleIndex = 3;
 
 // add cards to card columns
-function addCards() {
-    let i=0;
-    for (let c in cardData) {
+function addCards(e, cards) {
+    if (!cards) {
+        cards = Object.values(cardData);
+        cards.sort(sortFunctions[0]);
+    }
+
+    for (let c=0; c<cards.length; c++) {
+        const card = cards[c];
         const newCard = cardTemplate.cloneNode(true);
-        newCard.setAttribute('id', cardData[c].id);
+        newCard.setAttribute('id', card.id);
         newCard.setAttribute('style', '');
 
         // set card image
         const cardImage = newCard.querySelector('img');
-        cardImage.setAttribute('src', `./assets/${cardData[c].src}`);
-        cardImage.setAttribute('alt', cardData[c].id);
+        cardImage.setAttribute('src', `./assets/${card.src}`);
+        cardImage.setAttribute('alt', card.id);
 
         // set card stats
-        newCard.querySelectorAll('p')[0].textContent = cardData[c].views;
-        newCard.querySelectorAll('p')[1].textContent = cardData[c].likes;
-        newCard.querySelectorAll('p')[2].textContent = new Date(cardData[c].timestamp).toLocaleDateString();
+        newCard.querySelectorAll('p')[0].textContent = card.views;
+        newCard.querySelectorAll('p')[1].textContent = card.likes;
+        newCard.querySelectorAll('p')[2].textContent = new Date(card.timestamp).toLocaleDateString();
 
-        newCard.querySelector('h4').textContent = cardData[c].title;
+        newCard.querySelector('h4').textContent = card.title;
 
         newCard.addEventListener('click', displayCard);
 
-        cardColumns[i++%3].appendChild(newCard);
+        cardColumns[c%3].appendChild(newCard);
     }
 }
 
@@ -214,11 +231,11 @@ function zoomOutDisplayImage() {
         mainImage.parentElement.setAttribute('style', `height: ${imageScale[--imageScaleIndex]}%;`);
         if (imageScaleIndex === 0) {
             // disable zoom out button if at smallest zoom
-            zoomOutButton.setAttribute('class', 'disabled');
+            zoomOutButton.classList.toggle('disabled');
         }
         else if (imageScaleIndex === imageScale.length-2) {
             // enable zoom in button if no longer at largest zoom
-            zoomInButton.setAttribute('class', '');
+            zoomInButton.classList.toggle('disabled');
         }
     }
 }
@@ -228,16 +245,36 @@ function zoomInDisplayImage() {
         mainImage.parentElement.setAttribute('style', `height: ${imageScale[++imageScaleIndex]}%;`);
         if (imageScaleIndex === imageScale.length-1) {
             // disable zoom in button if at largest zoom
-            zoomInButton.setAttribute('class', 'disabled');
+            zoomInButton.classList.toggle('disabled');
         }
         else if (imageScaleIndex === 1) {
             // enable zoom out button if no longer at smallest zoom
-            zoomOutButton.setAttribute('class', '');
+            zoomOutButton.classList.toggle('disabled');
         }
     }
 }
 
 function showZoomButtons() {
+}
+
+function toggleSortMenu() {
+    sortMenu.classList.toggle('hidden');
+}
+
+function hideSortMenu(e) {
+    if (e.target !== sortButton && !sortMenu.contains(e.target)) {
+        sortMenu.classList.add('hidden');
+    }
+}
+
+function sortCards() {
+    const sortedCards = Object.values(cardData);
+    sortedCards.sort(sortFunctions[this.value]);
+
+    cardColumns[0].innerHTML = '';
+    cardColumns[1].innerHTML = '';
+    cardColumns[2].innerHTML = '';
+    addCards(0, sortedCards);
 }
 
 // add event listeners
@@ -247,3 +284,8 @@ fullDisplay.querySelector('.info-button').addEventListener('click', toggleDispla
 displaySidebar.querySelector('button').addEventListener('click', hideDisplaySidebar);
 zoomOutButton.addEventListener('click', zoomOutDisplayImage);
 zoomInButton.addEventListener('click', zoomInDisplayImage);
+sortButton.addEventListener('click', toggleSortMenu);
+document.addEventListener('click', hideSortMenu);
+for (let i=0; i<4; i++) {
+    sortMenu.querySelectorAll('input')[i].addEventListener('click', sortCards);
+}

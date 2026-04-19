@@ -285,13 +285,8 @@ body {
     transition: 200ms;
 }
 
-#full-display .zoom button.disabled {
-    filter: brightness(0.5);
-}
-
-#full-display .zoom button.disabled:hover {
-    cursor: default;
-    background-color: transparent;
+#full-display .zoom button img {
+    height: 24px;
 }
 
 #full-display .sidebar {
@@ -333,16 +328,36 @@ body {
 
 #full-display button img {
     display: block;
+    height: 32px;
 }
 
-#full-display .close-button {
+#full-display button.disabled {
+    filter: brightness(0.5);
+}
+
+#full-display button.disabled:hover {
+    cursor: default;
+    background-color: transparent;
+}
+
+#full-display .top-buttons {
     position: absolute;
     top: 24px;
     right: 24px;
+    display: flex;
+    gap: 8px;
 }
 
-#full-display .info-button {
+#full-display .previous-button {
     position: absolute;
-    top: 24px;
-    right: 64px;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+}
+
+#full-display .next-button {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
 }

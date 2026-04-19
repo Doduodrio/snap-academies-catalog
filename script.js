@@ -14,6 +14,8 @@ const displaySidebar = fullDisplay.querySelector('.sidebar');
 const zoom           = fullDisplay.querySelector('.zoom');
 const zoomOutButton  = fullDisplay.querySelectorAll('.zoom button')[0];
 const zoomInButton   = fullDisplay.querySelectorAll('.zoom button')[1];
+const prevButton     = fullDisplay.querySelector('.previous-button');
+const nextButton     = fullDisplay.querySelector('.next-button');
 const displayFooter  = document.getElementById('display-footer');
 
 const sortButton     = document.getElementById('sort-button');
@@ -137,6 +139,9 @@ const sortFunctions = [
     (a, b) => b.views - a.views                              // most viewed
 ];
 
+var currentCards = [];
+var currentCardIndex = 0;
+
 var imageScale = [20, 40, 60, 85, 100];
 var imageScaleIndex = 3;
 
@@ -147,6 +152,7 @@ function addCards(e, cards) {
         cards.sort(sortFunctions[0]);
     }
 
+    currentCards = [];
     for (let c=0; c<cards.length; c++) {
         const card = cards[c];
         const newCard = cardTemplate.cloneNode(true);
@@ -168,32 +174,41 @@ function addCards(e, cards) {
         newCard.addEventListener('click', displayCard);
 
         cardColumns[c%3].appendChild(newCard);
+        currentCards.push(card);
     }
+    console.log(currentCards);
 }
 
-function displayCard() {
+function displayCard(e, card) {
+    if (!card) {
+        // function called by clicking on a card
+        card = cardData[this.id];
+        currentCardIndex = currentCards.findIndex((c) => c.id === this.id);
+        updateArrowButtons();
+
+        // align display to screen
+        fullDisplay.setAttribute('style', `top: ${window.scrollY}px`);
+
+        // lock screen
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.setAttribute('style', 'overflow: hidden;');
+        mainpage.setAttribute('style', `padding-right: ${scrollbarWidth+16}px;`);
+    }
+
     // set display image
-    mainImage.setAttribute('src', `./assets/${cardData[this.id].src}`);
-    mainImage.setAttribute('alt', `./assets/${cardData[this.id].id}`);
+    mainImage.setAttribute('src', `./assets/${card.src}`);
+    mainImage.setAttribute('alt', `./assets/${card.id}`);
 
     // set card info
-    fullDisplay.querySelector('h2').textContent = cardData[this.id].title;
-    fullDisplay.querySelectorAll('p')[0].textContent = cardData[this.id].views;
-    fullDisplay.querySelectorAll('p')[1].textContent = cardData[this.id].likes;
+    fullDisplay.querySelector('h2').textContent = card.title;
+    fullDisplay.querySelectorAll('p')[0].textContent = card.views;
+    fullDisplay.querySelectorAll('p')[1].textContent = card.likes;
 
     const timestamp = fullDisplay.querySelector('time');
-    timestamp.setAttribute('datetime', cardData[this.id].timestamp);
-    timestamp.textContent = new Date(cardData[this.id].timestamp).toLocaleDateString();
+    timestamp.setAttribute('datetime', card.timestamp);
+    timestamp.textContent = new Date(card.timestamp).toLocaleDateString();
     
-    fullDisplay.querySelectorAll('p')[2].textContent = cardData[this.id].description;
-
-    // align display to screen
-    fullDisplay.setAttribute('style', `top: ${window.scrollY}px`);
-
-    // lock screen
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    document.body.setAttribute('style', 'overflow: hidden;');
-    mainpage.setAttribute('style', `padding-right: ${scrollbarWidth+16}px;`);
+    fullDisplay.querySelectorAll('p')[2].textContent = card.description;
 }
 
 function hideDisplay(e) {
@@ -262,7 +277,7 @@ function toggleSortMenu() {
 }
 
 function hideSortMenu(e) {
-    if (e.target !== sortButton && !sortMenu.contains(e.target)) {
+    if (!(sortButton.contains(e.target) || sortMenu.contains(e.target))) {
         sortMenu.classList.add('hidden');
     }
 }
@@ -277,15 +292,56 @@ function sortCards() {
     addCards(0, sortedCards);
 }
 
+function previousDrawing() {
+    if (currentCardIndex > 0) {
+        displayCard(0, currentCards[--currentCardIndex]);
+        updateArrowButtons();
+    }
+}
+
+function nextDrawing() {
+    if (currentCardIndex < currentCards.length-1) {
+        displayCard(0, currentCards[++currentCardIndex]);
+        updateArrowButtons();
+    }
+}
+
+function updateArrowButtons() {
+    if (currentCardIndex === 0) {
+        prevButton.classList.add('disabled');
+    }
+    if (currentCardIndex > 0) {
+        prevButton.classList.remove('disabled');
+    }
+    if (currentCardIndex < currentCards.length-1) {
+        nextButton.classList.remove('disabled');
+    }
+    if (currentCardIndex === currentCards.length-1) {
+        nextButton.classList.add('disabled');
+    }
+}
+
 // add event listeners
 document.addEventListener('DOMContentLoaded', addCards);
 fullDisplay.addEventListener('click', hideDisplay);
+
 fullDisplay.querySelector('.info-button').addEventListener('click', toggleDisplaySidebar);
 displaySidebar.querySelector('button').addEventListener('click', hideDisplaySidebar);
+
 zoomOutButton.addEventListener('click', zoomOutDisplayImage);
 zoomInButton.addEventListener('click', zoomInDisplayImage);
+
 sortButton.addEventListener('click', toggleSortMenu);
 document.addEventListener('click', hideSortMenu);
+
 for (let i=0; i<4; i++) {
     sortMenu.querySelectorAll('input')[i].addEventListener('click', sortCards);
 }
+
+prevButton.addEventListener('click', previousDrawing);
+nextButton.addEventListener('click', nextDrawing);
+
+// NOTE TO SELF: add arrows to switch between drawings (use currentCards)
+// also add filtering by dimensions and colors
+// also add search bar
+// also add dimensions and colors to sidebar details

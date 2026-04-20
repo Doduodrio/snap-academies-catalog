@@ -20,6 +20,7 @@ const displayFooter  = document.getElementById('display-footer');
 
 const sortButton     = document.getElementById('sort-button');
 const sortMenu       = document.getElementById('sort-menu');
+const searchBar      = document.getElementById('search-bar').querySelector('input[type="text"]');
 
 const cardData = {
     'dpr_ian_mito': {
@@ -152,31 +153,45 @@ function addCards(e, cards) {
         cards.sort(sortFunctions[0]);
     }
 
-    currentCards = [];
-    for (let c=0; c<cards.length; c++) {
-        const card = cards[c];
-        const newCard = cardTemplate.cloneNode(true);
-        newCard.setAttribute('id', card.id);
-        newCard.setAttribute('style', '');
+    if (cards.length > 0) {
+        currentCards = [];
+        for (let c=0; c<cards.length; c++) {
+            const card = cards[c];
+            const newCard = cardTemplate.cloneNode(true);
+            newCard.setAttribute('id', card.id);
+            newCard.setAttribute('style', '');
 
-        // set card image
-        const cardImage = newCard.querySelector('img');
-        cardImage.setAttribute('src', `./assets/${card.src}`);
-        cardImage.setAttribute('alt', card.id);
+            // set card image
+            const cardImage = newCard.querySelector('img');
+            cardImage.setAttribute('src', `./assets/${card.src}`);
+            cardImage.setAttribute('alt', card.id);
 
-        // set card stats
-        newCard.querySelectorAll('p')[0].textContent = card.views;
-        newCard.querySelectorAll('p')[1].textContent = card.likes;
-        newCard.querySelectorAll('p')[2].textContent = new Date(card.timestamp).toLocaleDateString();
+            // set card stats
+            newCard.querySelectorAll('p')[0].textContent = card.views;
+            newCard.querySelectorAll('p')[1].textContent = card.likes;
+            newCard.querySelectorAll('p')[2].textContent = new Date(card.timestamp).toLocaleDateString();
 
-        newCard.querySelector('h4').textContent = card.title;
+            newCard.querySelector('h4').textContent = card.title;
 
-        newCard.addEventListener('click', displayCard);
+            newCard.addEventListener('click', displayCard);
 
-        cardColumns[c%3].appendChild(newCard);
-        currentCards.push(card);
+            cardColumns[c%3].appendChild(newCard);
+            currentCards.push(card);
+        }
     }
-    console.log(currentCards);
+    else {
+        const errorMessage = document.createElement('div');
+        errorMessage.id = 'error-message';
+        const errorImage = document.createElement('img');
+        errorImage.setAttribute('src', './assets/duo_shrug.png');
+        errorImage.setAttribute('alt', 'duo_shrug');
+        const errorText = document.createElement('p');
+        errorText.textContent = 'No drawings were found.';
+
+        errorMessage.appendChild(errorImage);
+        errorMessage.appendChild(errorText);
+        cardColumns[1].appendChild(errorMessage);
+    }
 }
 
 function displayCard(e, card) {
@@ -223,11 +238,12 @@ function hideDisplay(e) {
 }
 
 function toggleDisplaySidebar() {
-    if (displaySidebar.getAttribute('style') === 'display: none;') {
+    if (displaySidebar.classList.contains('hidden')) {
         // show sidebar and shift image left
-        displaySidebar.setAttribute('style', '');
+        displaySidebar.classList.remove('hidden');
         mainImage.setAttribute('style', `transform: translateX(-${displaySidebar.clientWidth/2+12}px);`);
         zoom.setAttribute('style', `transform: translateX(-${displaySidebar.clientWidth/2+12}px);`);
+        nextButton.setAttribute('style', `transform: translateX(-${displaySidebar.clientWidth+24}px);`);
     }
     else {
         hideDisplaySidebar();
@@ -236,9 +252,10 @@ function toggleDisplaySidebar() {
 
 function hideDisplaySidebar() {
     // hide sidebar and shift image right
-    displaySidebar.setAttribute('style', 'display: none;');
+    displaySidebar.classList.add('hidden');
     mainImage.setAttribute('style', '');
     zoom.setAttribute('style', '');
+    nextButton.setAttribute('style', '');
 }
 
 function zoomOutDisplayImage() {
@@ -282,14 +299,16 @@ function hideSortMenu(e) {
     }
 }
 
-function sortCards() {
-    const sortedCards = Object.values(cardData);
-    sortedCards.sort(sortFunctions[this.value]);
+function updateCards() {
+    const updatedCards = Object.values(cardData).filter(
+        (a) => a.title.toLowerCase().includes(searchBar.value.toLowerCase())
+    );
+    if (this.value) {updatedCards.sort(sortFunctions[this.value]);}
 
     cardColumns[0].innerHTML = '';
     cardColumns[1].innerHTML = '';
     cardColumns[2].innerHTML = '';
-    addCards(0, sortedCards);
+    addCards(0, updatedCards);
 }
 
 function previousDrawing() {
@@ -321,6 +340,12 @@ function updateArrowButtons() {
     }
 }
 
+var timeoutId = null;
+function onSearchBarInput(e) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(updateCards, 200);
+}
+
 // add event listeners
 document.addEventListener('DOMContentLoaded', addCards);
 fullDisplay.addEventListener('click', hideDisplay);
@@ -335,13 +360,15 @@ sortButton.addEventListener('click', toggleSortMenu);
 document.addEventListener('click', hideSortMenu);
 
 for (let i=0; i<4; i++) {
-    sortMenu.querySelectorAll('input')[i].addEventListener('click', sortCards);
+    sortMenu.querySelectorAll('input')[i].addEventListener('click', updateCards);
 }
+
+searchBar.addEventListener('input', onSearchBarInput);
+document.addEventListener('keypress', () => {searchBar.focus();});
 
 prevButton.addEventListener('click', previousDrawing);
 nextButton.addEventListener('click', nextDrawing);
 
-// NOTE TO SELF: add arrows to switch between drawings (use currentCards)
-// also add filtering by dimensions and colors
-// also add search bar
+// NOTE TO SELF:
+// add filtering by dimensions and colors
 // also add dimensions and colors to sidebar details

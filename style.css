@@ -7,9 +7,12 @@
 
 html,
 body {
-    height: 100%;
     font-family: 'Roboto Mono', Roboto;
     background-color: var(--theme-light);
+}
+
+.hidden {
+    display: none !important;
 }
 
 .header {
@@ -46,9 +49,8 @@ body {
     max-width: 1440px;
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    margin: 0 auto;
-    padding: 16px;
+    gap: 32px;
+    padding: 16px 32px;
 }
 
 .overview {
@@ -71,6 +73,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
 }
 
 .sort-filter-menu {
@@ -109,10 +112,6 @@ body {
     border-radius: 8px;
     padding: 8px;
     z-index: 1;
-}
-
-#sort-menu.hidden {
-    display: none;
 }
 
 #sort-menu label {
@@ -154,7 +153,7 @@ body {
     box-shadow: inset 1em 1em var(--theme-light);
     background-color: var(--theme-light);
     transform: scale(0);
-    transition: 200ms;
+    transition: transform 200ms;
 }
 
 #sort-menu input[type="radio"]:checked::before {
@@ -177,6 +176,43 @@ body {
 
 .sort-filter-menu select:hover {
     cursor: pointer;
+}
+
+#search-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 300px;
+    background-color: var(--theme-dark);
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-left: auto;
+    padding: 4px 16px;
+    overflow: hidden;
+}
+
+#search-bar input[type="text"] {
+    font-family: inherit;
+    color: var(--theme-light);
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+    resize: none;
+    overflow: hidden;
+}
+
+#search-bar input[type="text"]::placeholder {
+    color: rgb(255, 255, 255, 0.6);
+}
+
+#search-bar input[type="text"]:focus {
+    outline: none;
+}
+
+#search-bar input[type="text"]:focus::placeholder {
+    color: rgb(255, 255, 255, 0.3);
 }
 
 .card-column-container {
@@ -217,7 +253,7 @@ body {
     border-radius: 4px;
     box-sizing: border-box;
     opacity: 0;
-    transition: 200ms;
+    transition: opacity 200ms;
 }
 
 .card-overlay:hover {
@@ -260,13 +296,12 @@ body {
     display: flex;
     align-items: center;
     height: 85%;
-    transition: 200ms;
 }
 
 #full-display .main-image img {
     display: block;
     height: 100%;
-    transition: 200ms;
+    transition: transform 200ms;
 }
 
 #full-display #display-footer {
@@ -284,7 +319,7 @@ body {
     background-color: var(--theme-dark);
     border-radius: 24px;
     margin-bottom: 12px;
-    transition: 200ms;
+    transition: transform 200ms;
 }
 
 #full-display .zoom button img {
@@ -320,7 +355,7 @@ body {
     padding: 6px;
     border: none;
     border-radius: 50%;
-    transition: 200ms;
+    transition: background-color 200ms;
 }
 
 #full-display button:hover {
@@ -362,4 +397,14 @@ body {
     top: 50%;
     right: 16px;
     transform: translateY(-50%);
+}
+
+#error-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#error-message img {
+    height: 160px;
 }

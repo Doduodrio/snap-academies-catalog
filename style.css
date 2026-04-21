@@ -169,16 +169,53 @@ body {
     background-color: var(--theme-dark);
     font-family: 'Roboto Mono', Roboto;
     font-weight: bold;
-    border-radius: 8px;
+    border: none;
     box-sizing: border-box;
-    padding: 8px 16px;
 }
 
 .sort-filter-menu select:hover {
     cursor: pointer;
 }
 
-#search-bar {
+.sort-filter-menu input {
+    font-family: inherit;
+    color: var(--theme-light);
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+    resize: none;
+    overflow: hidden;
+}
+
+.sort-filter-menu input::placeholder {
+    color: rgb(255, 255, 255, 0.6);
+}
+
+.sort-filter-menu input:focus {
+    outline: none;
+}
+
+.sort-filter-menu input:focus::placeholder {
+    color: rgb(255, 255, 255, 0.3);
+}
+
+.sort-filter-menu .filter-menu {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: var(--theme-light);
+    background-color: var(--theme-dark);
+    font-size: 13.3333px;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+.sort-filter-menu .filter-menu input {
+    width: 24px;
+}
+
+.search-bar {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -191,28 +228,8 @@ body {
     overflow: hidden;
 }
 
-#search-bar input[type="text"] {
-    font-family: inherit;
-    color: var(--theme-light);
+#search-menu input {
     width: 100%;
-    background-color: transparent;
-    border: none;
-    border-radius: 4px;
-    padding: 4px;
-    resize: none;
-    overflow: hidden;
-}
-
-#search-bar input[type="text"]::placeholder {
-    color: rgb(255, 255, 255, 0.6);
-}
-
-#search-bar input[type="text"]:focus {
-    outline: none;
-}
-
-#search-bar input[type="text"]:focus::placeholder {
-    color: rgb(255, 255, 255, 0.3);
 }
 
 .card-column-container {

@@ -20,7 +20,12 @@ const displayFooter  = document.getElementById('display-footer');
 
 const sortButton     = document.getElementById('sort-button');
 const sortMenu       = document.getElementById('sort-menu');
-const searchBar      = document.getElementById('search-bar').querySelector('input[type="text"]');
+const colorsOperator = document.getElementById('colors-operator');
+const colorsInput    = document.getElementById('colors-input');
+const sizeOperator   = document.getElementById('size-operator');
+const widthInput     = document.getElementById('width-input');
+const heightInput    = document.getElementById('height-input');
+const searchBar      = document.getElementById('search-bar');
 
 const cardData = {
     'dpr_ian_mito': {
@@ -33,7 +38,7 @@ const cardData = {
         'views': 336,
         'height': 64,
         'width': 64,
-        'colors': 4
+        'colors': 11
     },
     'dpr_ian': {
         'title': 'DPR IAN',
@@ -133,12 +138,18 @@ const cardData = {
     }
 }
 
-const sortFunctions = [
-    (a, b) => new Date(b.timestamp) - new Date(a.timestamp), // newest
-    (a, b) => new Date(a.timestamp) - new Date(b.timestamp), // oldest
-    (a, b) => b.likes - a.likes,                             // most liked
-    (a, b) => b.views - a.views                              // most viewed
-];
+const sortFunctions = {
+    newest: (a, b) => new Date(b.timestamp) - new Date(a.timestamp),
+    oldest: (a, b) => new Date(a.timestamp) - new Date(b.timestamp),
+    liked:  (a, b) => b.likes - a.likes,
+    viewed: (a, b) => b.views - a.views
+};
+
+const comparisons = {
+    at_least: (a, b) => a >= b,
+    exactly:  (a, b) => a == b,
+    at_most:  (a, b) => a <= b
+}
 
 var currentCards = [];
 var currentCardIndex = 0;
@@ -150,7 +161,7 @@ var imageScaleIndex = 3;
 function addCards(e, cards) {
     if (!cards) {
         cards = Object.values(cardData);
-        cards.sort(sortFunctions[0]);
+        cards.sort(sortFunctions['newest']);
     }
 
     if (cards.length > 0) {
@@ -301,9 +312,18 @@ function hideSortMenu(e) {
 
 function updateCards() {
     const updatedCards = Object.values(cardData).filter(
-        (a) => a.title.toLowerCase().includes(searchBar.value.toLowerCase())
+        // filter by search bar input
+        (a) => a.title.toLowerCase().includes(searchBar.value.trim().toLowerCase())
+    ).filter(
+        // filter by color count
+        (a) => +colorsInput.value.trim() ? comparisons[colorsOperator.value](a.colors, colorsInput.value) : true
+    ).filter(
+        // filter by drawing size
+        (a) => (+widthInput.value.trim() ? comparisons[sizeOperator.value](a.width, widthInput.value) : true)
+            && (+heightInput.value.trim() ? comparisons[sizeOperator.value](a.height, heightInput.value) : true)
     );
-    if (this.value) {updatedCards.sort(sortFunctions[this.value]);}
+    // sort by selected sort order
+    updatedCards.sort(sortFunctions[sortMenu.querySelector('input[type="radio"]:checked').value]);
 
     cardColumns[0].innerHTML = '';
     cardColumns[1].innerHTML = '';
@@ -341,9 +361,17 @@ function updateArrowButtons() {
 }
 
 var timeoutId = null;
-function onSearchBarInput(e) {
+function onInput(e) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(updateCards, 200);
+}
+
+function typeableKeyPressed(e) {
+    if (e.key.length === 1 && !(e.ctrlKey || e.shiftKey || e.altKey || e.metaKey)
+        && document.activeElement !== colorsInput && document.activeElement !== widthInput
+        && document.activeElement !== heightInput) {
+        searchBar.focus();
+    }
 }
 
 // add event listeners
@@ -363,12 +391,17 @@ for (let i=0; i<4; i++) {
     sortMenu.querySelectorAll('input')[i].addEventListener('click', updateCards);
 }
 
-searchBar.addEventListener('input', onSearchBarInput);
-document.addEventListener('keypress', () => {searchBar.focus();});
+colorsOperator.addEventListener('input', onInput);
+colorsInput.addEventListener('input', onInput);
+sizeOperator.addEventListener('input', onInput);
+widthInput.addEventListener('input', onInput);
+heightInput.addEventListener('input', onInput);
+
+searchBar.addEventListener('input', onInput);
+document.addEventListener('keydown', typeableKeyPressed);
 
 prevButton.addEventListener('click', previousDrawing);
 nextButton.addEventListener('click', nextDrawing);
 
 // NOTE TO SELF:
-// add filtering by dimensions and colors
-// also add dimensions and colors to sidebar details
+// add dimensions and colors to sidebar details

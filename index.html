@@ -35,29 +35,35 @@
                 <div class="sort-filter-menu">
                     <button id="sort-button"><img src="./assets/sort.svg" alt="sort">Sort</button>
                     <form id="sort-menu" class="hidden">
-                        <label><input type="radio" name="sort" value="0" checked>Newest</label>
-                        <label><input type="radio" name="sort" value="1">Oldest</label>
-                        <label><input type="radio" name="sort" value="2">Most Liked</label>
-                        <label><input type="radio" name="sort" value="3">Most Viewed</label>
+                        <label><input type="radio" name="sort" value="newest" checked>Newest</label>
+                        <label><input type="radio" name="sort" value="oldest">Oldest</label>
+                        <label><input type="radio" name="sort" value="liked">Most Liked</label>
+                        <label><input type="radio" name="sort" value="viewed">Most Viewed</label>
                     </form>
-                    <select name="Options">
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                        <option value="Option 3">Option 3</option>
-                    </select>
-                    <select name="Other Options">
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                        <option value="Option 3">Option 3</option>
-                    </select>
-                    <select name="Other Other Options">
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                        <option value="Option 3">Option 3</option>
-                    </select>
-                    <div id="search-bar">
+                    <div class="filter-menu">
+                        <h4>Colors:&nbsp;</h4>
+                        <select id="colors-operator">
+                            <option value="at_least">At least</option>
+                            <option value="exactly">Exactly</option>
+                            <option value="at_most">At most</option>
+                        </select>
+                        <input id="colors-input" type="text" placeholder="###" inputmode="numeric">
+                    </div>
+                    <div class="filter-menu">
+                        <h4>Size:&nbsp;</h4>
+                        <select id="size-operator">
+                            <option value="at_least">At least</option>
+                            <option value="exactly">Exactly</option>
+                            <option value="at_most">At most</option>
+                        </select>
+                        <input id="width-input" type="text" placeholder="###" inputmode="numeric">
+                        <h4>x</h4>
+                        <input id="height-input" type="text" placeholder="###" inputmode="numeric">
+                        <h4>px</h4>
+                    </div>
+                    <div class="search-bar">
                         <img src="./assets/search.svg" alt="search">
-                        <input type="text" placeholder="Search drawings" rows="1" spellcheck="false" maxlength="50"></input>
+                        <input id="search-bar" type="text" placeholder="Search drawings" spellcheck="false" maxlength="50"></input>
                     </div>
                 </div>
                 <div class="card-column-container">

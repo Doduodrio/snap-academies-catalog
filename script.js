@@ -9,6 +9,7 @@ const cardTemplate   = document.getElementById('card-template');
 
 const fullDisplay    = document.getElementById('full-display');
 const mainImage      = fullDisplay.querySelector('.main-image img');
+const infoButton     = fullDisplay.querySelector('.info-button');
 const closeButton    = fullDisplay.querySelector('.close-button');
 const displaySidebar = fullDisplay.querySelector('.sidebar');
 const zoom           = fullDisplay.querySelector('.zoom');
@@ -38,7 +39,7 @@ const cardData = {
         'views': 336,
         'height': 64,
         'width': 64,
-        'colors': 11
+        'colors': ['#040404', '#1f1f1f', '#2d2b2b', '#464545', '#535151', '#5f5d5d', '#7a7878', '#939292', '#b0adad', '#cdc8c8', '#fdf7f7']
     },
     'dpr_ian': {
         'title': 'DPR IAN',
@@ -50,7 +51,7 @@ const cardData = {
         'views': 1972,
         'height': 144,
         'width': 144,
-        'colors': 14
+        'colors': ['#000000', '#160f1f', '#321b2d', '#463641', '#786a6a', '#997e7a', '#c09b93', '#c4ada7', '#baaca9', '#69283e', '#804355', '#aa7273', '#171f36', '#3c3e55', '#5a6f80']
     },
     'halloween_gbc_sprites': {
         'title': 'Halloween GBC Sprites',
@@ -62,7 +63,7 @@ const cardData = {
         'views': 457,
         'height': 152,
         'width': 152,
-        'colors': 5
+        'colors': ['#472828', '#945646', '#f78c45', '#ffe9c7', '#ecd5b7']
     },
     'v': {
         'title': 'V',
@@ -72,9 +73,9 @@ const cardData = {
         'src': 'v.png',
         'likes': 81,
         'views': 656,
-        'height': 144,
-        'width': 160,
-        'colors': 10
+        'height': 160,
+        'width': 144,
+        'colors': ['#000000', '#92b4a6', '#ddebde', '#643e29', '#8a5e3d', '#a17858', '#c79c77', '#dfb288', '#fad0b1', '#874841']
     },
     'hands_study': {
         'title': 'Hands Study',
@@ -86,7 +87,7 @@ const cardData = {
         'views': 5446,
         'height': 184,
         'width': 184,
-        'colors': 4
+        'colors': ['#000000', '#77778f', '#cfa7af', '#ffffff']
     },
     'may': {
         'title': 'May',
@@ -96,9 +97,9 @@ const cardData = {
         'src': 'may.png',
         'likes': 67,
         'views': 716,
-        'height': 100,
-        'width': 90,
-        'colors': 4
+        'height': 90,
+        'width': 100,
+        'colors': ['#1a1a1a', '#7a525f', '#d19494', '#faefeb']
     },
     'clockworkgrn_portraits': {
         'title': 'clockworkgrn Portraits',
@@ -110,7 +111,7 @@ const cardData = {
         'views': 743,
         'height': 188,
         'width': 188,
-        'colors': 4
+        'colors': ['#1a1a1a', '#7a525f', '#d19494', '#faefeb']
     },
     'advance': {
         'title': 'Advance Wars!',
@@ -120,9 +121,9 @@ const cardData = {
         'src': 'advance.png',
         'likes': 197,
         'views': 2172,
-        'height': 227,
-        'width': 256,
-        'colors': 4
+        'height': 256,
+        'width': 227,
+        'colors': ['#1a1a1a', '#7a525f', '#d19494', '#faefeb']
     },
     'ranger': {
         'title': 'Pokémon Ranger',
@@ -134,7 +135,115 @@ const cardData = {
         'views': 329,
         'height': 56,
         'width': 56,
-        'colors': 4
+        'colors': ['#000000', '#b04828', '#c89060', '#ffffff']
+    },
+    'hey': {
+        'title': 'Hey',
+        'timestamp': '2025-05-13T05:42:00.267Z',
+        'description': 'A small 1-bit portrait that I use as my profile picture!',
+        'id': 'hey',
+        'src': 'hey.png',
+        'likes': 42,
+        'views': 394,
+        'height': 32,
+        'width': 32,
+        'colors': ['#1a1a1a', '#f2e9d9']
+    },
+    'totoro': {
+        'title': 'Totoro',
+        'timestamp': '2023-12-31T21:24:54.267Z',
+        'description': 'A sprite of Totoro drawn in the style of Gameboy Color games!',
+        'id': 'totoro',
+        'src': 'totoro.png',
+        'likes': 102,
+        'views': 1027,
+        'height': 56,
+        'width': 56,
+        'colors': ['#000000', '#77778f', '#cfa7af', '#ffffff']
+    },
+    'toriyama': {
+        'title': 'Akira Toriyama',
+        'timestamp': '2024-04-14T20:19:14.267Z',
+        'description': 'Portrait of Akira Toriyama (1955 - 2024), the creator of Dragon Ball.',
+        'id': 'toriyama',
+        'src': 'toriyama.png',
+        'likes': 540,
+        'views': 4782,
+        'height': 180,
+        'width': 120,
+        'colors': ['#000000', '#202020', '#303030', '#404040', '#505050', '#606060', '#707070', '#808080', '#909090', '#a0a0a0', '#b0b0b0', '#c0c0c0', '#d0d0d0', '#e0e0e0', '#f0f0f0', '#ffffff']
+    },
+    'happy_day': {
+        'title': 'Happy Day!',
+        'timestamp': '2023-06-16T07:48:10.267Z',
+        'description': "A 1-bit animation of a desk. There's a cat too!",
+        'id': 'happy_day',
+        'src': 'happy_day.gif',
+        'likes': 49,
+        'views': 601,
+        'height': 184,
+        'width': 200,
+        'colors': ['#1a1a1a', '#f2e9d9']
+    },
+    'blobby': {
+        'title': 'Blob of... something?',
+        'timestamp': '2023-08-18T04:24:59.267Z',
+        'description': 'Some sort of fleshy octopus creature. It stares at you ominously...',
+        'id': 'blobby',
+        'src': 'blobby.png',
+        'likes': 46,
+        'views': 511,
+        'height': 56,
+        'width': 56,
+        'colors': ['#000000', '#77778f', '#cfa7af', '#ffffff']
+    },
+    'craniac': {
+        'title': 'Craniac',
+        'timestamp': '2023-09-18T03:05:57.267Z',
+        'description': 'Craniac - The ROBBER Pokemon. Craniacs rob people without being noticed using their long, thin beaks and keep stolen goods in their beloved cloth sacks. Where they get their cloth sacks is unknown.',
+        'id': 'craniac',
+        'src': 'craniac.png',
+        'likes': 71,
+        'views': 578,
+        'height': 56,
+        'width': 56,
+        'colors': ['#000000', '#77778f', '#cfa7af', '#ffffff']
+    },
+    'gb_walk': {
+        'title': 'Gameboy Walking Sprites',
+        'timestamp': '2023-07-24T01:31:34.267Z',
+        'description': 'Walking animations of me and people I know, in the style of Gameboy Pokémon sprites!',
+        'id': 'gb_walk',
+        'src': 'gb_walk.gif',
+        'likes': 62,
+        'views': 691,
+        'height': 168,
+        'width': 120,
+        'colors': ['#114f79', '#f79ab7', '#fff0f2', '#fee3e9']
+    },
+    'slam': {
+        'title': 'Slamcake',
+        'timestamp': '2022-06-05T19:08:05.675Z',
+        'description': 'A little pancake Pokémon that I made with the help of some of my friends! This was also one of the first pixel art drawings I made that I was actually proud of.',
+        'id': 'slam',
+        'src': 'slam.png',
+        'likes': 170,
+        'views': 1522,
+        'height': 64,
+        'width': 64,
+        'colors': ['#000000', '#40403f', '#8a4c2a', '#9a613c', '#c59057', '#db5d23', '#b0491c', '#cb6200', '#dc8222', '#eac264', '#fff8d8']
+    },
+    'montblanc': {
+        'title': 'Montblanc',
+        'timestamp': '2024-06-10T23:26:17.675Z',
+        'description': 'A sprite of Montblanc from Final Fantasy: Tactics Advance in a Gameboy style.',
+        'id': 'montblanc',
+        'src': 'montblanc.png',
+        'likes': 56,
+        'views': 659,
+        'height': 56,
+        'width': 56,
+        'colors': ['#000000', '#77778f', '#cfa7af', '#ffffff']
     }
 }
 
@@ -166,6 +275,7 @@ function addCards(e, cards) {
 
     if (cards.length > 0) {
         currentCards = [];
+        let heights = [0, 0, 0];
         for (let c=0; c<cards.length; c++) {
             const card = cards[c];
             const newCard = cardTemplate.cloneNode(true);
@@ -186,7 +296,9 @@ function addCards(e, cards) {
 
             newCard.addEventListener('click', displayCard);
 
-            cardColumns[c%3].appendChild(newCard);
+            const minIndex = heights.indexOf(Math.min(...heights));
+            cardColumns[minIndex].appendChild(newCard);
+            heights[minIndex] += card.height/card.width*100;
             currentCards.push(card);
         }
     }
@@ -235,6 +347,17 @@ function displayCard(e, card) {
     timestamp.textContent = new Date(card.timestamp).toLocaleDateString();
     
     fullDisplay.querySelectorAll('p')[2].textContent = card.description;
+    fullDisplay.querySelectorAll('p')[3].textContent = `Colors: ${card.colors.length}, Size: ${card.width}x${card.height}`;
+
+    const palette = fullDisplay.querySelector('.palette');
+    palette.innerHTML = '';
+    for (let i=0; i<card.colors.length; i++) {
+        const newColor = document.createElement('div');
+        newColor.setAttribute('class', 'color');
+        newColor.setAttribute('style', `background-color: ${card.colors[i]};`);
+        newColor.setAttribute('title', card.colors[i]);
+        palette.appendChild(newColor);
+    }
 }
 
 function hideDisplay(e) {
@@ -297,7 +420,17 @@ function zoomInDisplayImage() {
     }
 }
 
+var zoomTimeoutId = null;
 function showZoomButtons() {
+    for (let i=0; i<5; i++) {
+        [displayFooter, prevButton, nextButton, infoButton, closeButton][i].classList.remove('transparent');
+    }
+    clearTimeout(zoomTimeoutId);
+    zoomTimeoutId = setTimeout(() => {
+        for (let i=0; i<5; i++) {
+            [displayFooter, prevButton, nextButton, infoButton, closeButton][i].classList.add('transparent');
+        }
+    }, 2000);
 }
 
 function toggleSortMenu() {
@@ -316,7 +449,7 @@ function updateCards() {
         (a) => a.title.toLowerCase().includes(searchBar.value.trim().toLowerCase())
     ).filter(
         // filter by color count
-        (a) => +colorsInput.value.trim() ? comparisons[colorsOperator.value](a.colors, colorsInput.value) : true
+        (a) => +colorsInput.value.trim() ? comparisons[colorsOperator.value](a.colors.length, colorsInput.value) : true
     ).filter(
         // filter by drawing size
         (a) => (+widthInput.value.trim() ? comparisons[sizeOperator.value](a.width, widthInput.value) : true)
@@ -374,9 +507,21 @@ function typeableKeyPressed(e) {
     }
 }
 
+function generatePalette(colors) {
+    const palette = document.createElement('div');
+    palette.setAttribute('class', 'palette');
+    for (let i=0; i<4; i++) {
+        const newColor = document.createElement('div');
+        newColor.setAttribute('class', 'color');
+        newColor.setAttribute('style', `background-color: ${colors[i]}`);
+        palette.appendChild(newColor);
+    }
+}
+
 // add event listeners
 document.addEventListener('DOMContentLoaded', addCards);
 fullDisplay.addEventListener('click', hideDisplay);
+fullDisplay.addEventListener('mousemove', showZoomButtons);
 
 fullDisplay.querySelector('.info-button').addEventListener('click', toggleDisplaySidebar);
 displaySidebar.querySelector('button').addEventListener('click', hideDisplaySidebar);
@@ -402,6 +547,8 @@ document.addEventListener('keydown', typeableKeyPressed);
 
 prevButton.addEventListener('click', previousDrawing);
 nextButton.addEventListener('click', nextDrawing);
+
+// generatePalette(['#ffffff', '#ff0000', '#00ff00', '#0000ff']);
 
 // NOTE TO SELF:
 // add dimensions and colors to sidebar details

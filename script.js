@@ -324,6 +324,9 @@ function displayCard(e, card) {
         currentCardIndex = currentCards.findIndex((c) => c.id === this.id);
         updateArrowButtons();
 
+        // show display
+        fullDisplay.classList.remove('hidden');
+
         // align display to screen
         fullDisplay.setAttribute('style', `top: ${window.scrollY}px`);
 
@@ -363,7 +366,7 @@ function displayCard(e, card) {
 function hideDisplay(e) {
     // only hide if background or close button was clicked
     if (e.target === fullDisplay || e.target === fullDisplay.querySelector('.main-image') || closeButton.contains(e.target)) {
-        fullDisplay.setAttribute('style', 'display: none;');
+        fullDisplay.classList.add('hidden');
 
         // allow scrolling again
         document.body.setAttribute('style', '');
@@ -420,13 +423,13 @@ function zoomInDisplayImage() {
     }
 }
 
-var zoomTimeoutId = null;
-function showZoomButtons() {
+var displayTimeoutId = null;
+function showDisplayButtons() {
     for (let i=0; i<5; i++) {
         [displayFooter, prevButton, nextButton, infoButton, closeButton][i].classList.remove('transparent');
     }
-    clearTimeout(zoomTimeoutId);
-    zoomTimeoutId = setTimeout(() => {
+    clearTimeout(displayTimeoutId);
+    displayTimeoutId = setTimeout(() => {
         for (let i=0; i<5; i++) {
             [displayFooter, prevButton, nextButton, infoButton, closeButton][i].classList.add('transparent');
         }
@@ -499,29 +502,23 @@ function onInput(e) {
     timeoutId = setTimeout(updateCards, 200);
 }
 
-function typeableKeyPressed(e) {
+function onKeyDown(e) {
     if (e.key.length === 1 && !(e.ctrlKey || e.shiftKey || e.altKey || e.metaKey)
         && document.activeElement !== colorsInput && document.activeElement !== widthInput
-        && document.activeElement !== heightInput) {
+        && document.activeElement !== heightInput && fullDisplay.classList.contains('hidden')) {
         searchBar.focus();
     }
-}
-
-function generatePalette(colors) {
-    const palette = document.createElement('div');
-    palette.setAttribute('class', 'palette');
-    for (let i=0; i<4; i++) {
-        const newColor = document.createElement('div');
-        newColor.setAttribute('class', 'color');
-        newColor.setAttribute('style', `background-color: ${colors[i]}`);
-        palette.appendChild(newColor);
+    else if (!fullDisplay.classList.contains('hidden') && e.key.includes('Arrow')) {
+        showDisplayButtons();
+        if (e.key === 'ArrowRight') {nextDrawing();}
+        else if (e.key === 'ArrowLeft') {previousDrawing();}
     }
 }
 
 // add event listeners
 document.addEventListener('DOMContentLoaded', addCards);
 fullDisplay.addEventListener('click', hideDisplay);
-fullDisplay.addEventListener('mousemove', showZoomButtons);
+fullDisplay.addEventListener('mousemove', showDisplayButtons);
 
 fullDisplay.querySelector('.info-button').addEventListener('click', toggleDisplaySidebar);
 displaySidebar.querySelector('button').addEventListener('click', hideDisplaySidebar);
@@ -543,12 +540,7 @@ widthInput.addEventListener('input', onInput);
 heightInput.addEventListener('input', onInput);
 
 searchBar.addEventListener('input', onInput);
-document.addEventListener('keydown', typeableKeyPressed);
+document.addEventListener('keydown', onKeyDown);
 
 prevButton.addEventListener('click', previousDrawing);
 nextButton.addEventListener('click', nextDrawing);
-
-// generatePalette(['#ffffff', '#ff0000', '#00ff00', '#0000ff']);
-
-// NOTE TO SELF:
-// add dimensions and colors to sidebar details

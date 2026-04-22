@@ -59,6 +59,7 @@ body {
 
 .overview {
     flex-shrink: 0;
+    width: 250px;
     border: 2px solid var(--theme-dark);
     border-radius: 4px;
 }

@@ -15,6 +15,10 @@ body {
     display: none !important;
 }
 
+.transparent {
+    opacity: 0 !important;
+}
+
 .header {
     display: flex;
     align-items: center;
@@ -182,10 +186,8 @@ body {
     color: var(--theme-light);
     background-color: transparent;
     border: none;
-    border-radius: 4px;
+    border-bottom: solid 1px var(--theme-light);
     padding: 4px;
-    resize: none;
-    overflow: hidden;
 }
 
 .sort-filter-menu input::placeholder {
@@ -313,6 +315,7 @@ body {
     display: flex;
     align-items: center;
     height: 85%;
+    transition: 200ms;
 }
 
 #full-display .main-image img {
@@ -329,18 +332,17 @@ body {
     bottom: 0px;
     height: 64px;
     width: 100%;
+    background-image: linear-gradient(to top, rgb(0, 0, 0, 0.3), transparent);
+    opacity: 1;
+    transition: opacity 1s;
 }
 
 #full-display .zoom {
-    height: 36px;
+    height: 48px;
     background-color: var(--theme-dark);
     border-radius: 24px;
     margin-bottom: 12px;
     transition: transform 200ms;
-}
-
-#full-display .zoom button img {
-    height: 24px;
 }
 
 #full-display .sidebar {
@@ -367,12 +369,29 @@ body {
     align-items: flex-start;
 }
 
+#full-display .sidebar hr {
+    border-color: var(--theme-light);
+}
+
+#full-display .palette {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    border: solid 1px rgb(255, 255, 255, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#full-display .palette .color {
+    flex: 1;
+}
+
 #full-display button {
     background-color: transparent;
     padding: 6px;
     border: none;
     border-radius: 50%;
-    transition: background-color 200ms;
+    transition: background-color 200ms, opacity 1s;
 }
 
 #full-display button:hover {
@@ -382,7 +401,7 @@ body {
 
 #full-display button img {
     display: block;
-    height: 32px;
+    height: 36px;
 }
 
 #full-display button.disabled {
